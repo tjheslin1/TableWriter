@@ -5,22 +5,14 @@ public class Main {
     private static ColumnWitdthCalculator columnWitdthCalculator = new ColumnWitdthCalculator();
 
     public static void main(String[] args) {
-        TableLogger tableLogger = new TableLogger(new TableFormatter(columnWitdthCalculator), System.out::println)
-                .withColumn("testColumn4")
-                .withColumn("testColumn5")
-                .withColumn("testColumn")
-                .withColumn("testColumn62")
-                .withColumn("testColumn8")
-                .withColumn("testCol");
+        TableLogger tableLogger = new TableLogger(new TableFormatter(columnWitdthCalculator), table -> System.out.println(table))
+                .withColumn("Name")
+                .withColumn("Role")
+                .withColumn("Working Days");
 
-        tableLogger.addRow("testValue1", "testValue2", "testValue1", "testValue2", "testValue1", "testValue2");
-        tableLogger.addRow("testValue1", "testValue2", "testValue1", "testValue2", "testValue1", "testValue2");
-        tableLogger.addRow("testValue1", "testValue2", "testValue1", "testValue2", "testValue1", "testValue2");
-        tableLogger.addRow("testValue1testValue1testValue1testValue1", "testValue2", "testValue1", "testValue2", "testValue1", "testValue2");
-        tableLogger.addRow("testValue1", "testValue2", "testValue1", "testValue2", "testValue1", "testValue2");
-        tableLogger.addRow("testValue1", "testValue2", "testValue1", "testValue2", "testValue1", "testValue2");
-        tableLogger.addRow("testValue1", "testValue2", "testValue1", "testValue2testValue2testValue2testValue2", "testValue1", "testValue2");
-        tableLogger.addRow("testValue1", "testValue2", "testValue1", "testValue2", "testValue1", "testValue2");
+        tableLogger.addRow("Tom", "Developer", "5");
+        tableLogger.addRow("Paul", "Tester", "4");
+        tableLogger.addRow("Karen", "Support", "6");
 
         tableLogger.print();
     }
