@@ -5,7 +5,7 @@ public class Main {
     private static ColumnWitdthCalculator columnWitdthCalculator = new ColumnWitdthCalculator();
 
     public static void main(String[] args) {
-        TableLogger tableLogger = new TableLogger(new TableFormatter(columnWitdthCalculator))
+        TableLogger tableLogger = new TableLogger(new TableFormatter(columnWitdthCalculator), System.out::println)
                 .withColumn("testColumn4")
                 .withColumn("testColumn5")
                 .withColumn("testColumn")

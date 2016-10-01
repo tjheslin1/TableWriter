@@ -20,16 +20,9 @@ public class TableFormatter {
         StringBuilder stringBuilder = new StringBuilder();
         printDashedLine(tableCharacterWidth, stringBuilder);
 
-        for (int i = 0; i < columnNames.length; i++) {
-            int spaceLeftInColumn = columnWidths[i] - columnNames[i].length();
-            boolean lastColumn = i == columnNames.length - 1;
-            if (lastColumn) {
-                stringBuilder.append(columnNames[i]);
-            } else {
-                stringBuilder.append(columnNames[i] + restOfCellAsSpaces(spaceLeftInColumn));
-            }
-        }
+        stringBuilder.append(columnLine(columnNames, columnWidths));
         stringBuilder.append(System.lineSeparator());
+
         printDashedLine(tableCharacterWidth, stringBuilder);
 
         for (TableRow row : rows) {
@@ -38,6 +31,20 @@ public class TableFormatter {
 
         stringBuilder.append(dashedLineOfSize(tableCharacterWidth));
         return stringBuilder.toString();
+    }
+
+    private String columnLine(String[] columnNames, int[] columnWidths) {
+        StringBuilder columnLineBuilder = new StringBuilder();
+        for (int i = 0; i < columnNames.length; i++) {
+            int spaceLeftInColumn = columnWidths[i] - columnNames[i].length();
+            boolean lastColumn = i == columnNames.length - 1;
+            if (lastColumn) {
+                columnLineBuilder.append(columnNames[i]);
+            } else {
+                columnLineBuilder.append(columnNames[i] + restOfCellAsSpaces(spaceLeftInColumn));
+            }
+        }
+        return columnLineBuilder.toString();
     }
 
     private StringBuilder printDashedLine(int tableCharacterWidth, StringBuilder stringBuilder) {

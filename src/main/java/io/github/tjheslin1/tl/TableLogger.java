@@ -9,10 +9,13 @@ public class TableLogger {
 
     private final List<String> columnNames;
     private final List<TableRow> rows;
-    private final TableFormatter tableFormatter;
 
-    public TableLogger(TableFormatter tableFormatter) {
+    private final TableFormatter tableFormatter;
+    private final OutputStrategy outputStrategy;
+
+    public TableLogger(TableFormatter tableFormatter, OutputStrategy outputStrategy) {
         this.tableFormatter = tableFormatter;
+        this.outputStrategy = outputStrategy;
 
         this.columnNames = new ArrayList<>();
         this.rows = new ArrayList<>();
@@ -33,15 +36,25 @@ public class TableLogger {
     }
 
     public void print() {
+        String[] columnsArray = columnsArray();
+        TableRow[] rowsArray = rowsArray();
+
+        outputStrategy.print(tableFormatter.format(columnsArray, rowsArray));
+    }
+
+    private String[] columnsArray() {
         String[] columnsArray = new String[columnNames.size()];
         for (int i = 0; i < columnNames.size(); i++) {
             columnsArray[i] = columnNames.get(i);
         }
+        return columnsArray;
+    }
 
+    private TableRow[] rowsArray() {
         TableRow[] rowsArray = new TableRow[rows.size()];
         for (int i = 0; i < rows.size(); i++) {
             rowsArray[i] = rows.get(i);
         }
-        System.out.println(tableFormatter.format(columnsArray, rowsArray));
+        return rowsArray;
     }
 }
