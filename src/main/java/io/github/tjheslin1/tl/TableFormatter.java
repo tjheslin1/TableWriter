@@ -1,12 +1,11 @@
 package io.github.tjheslin1.tl;
 
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 public class TableFormatter {
 
     private final static String DASH = "-";
     public static final String PADDING = " | ";
-    public static final int PADDING_LENGTH = PADDING.length();
 
     private final ColumnWitdthCalculator columnWitdthCalculator;
 
@@ -16,7 +15,7 @@ public class TableFormatter {
 
     public String format(String[] columnNames, TableRow[] rows) {
         int[] columnWidths = columnWitdthCalculator.indexes(columnNames, rows);
-        int tableCharacterWidth = tableCharacterWidth(columnNames);
+        int tableCharacterWidth = tableCharacterWidth(columnWidths);
 
         StringBuilder stringBuilder = new StringBuilder();
         printDashedLine(tableCharacterWidth, stringBuilder);
@@ -34,7 +33,7 @@ public class TableFormatter {
         printDashedLine(tableCharacterWidth, stringBuilder);
 
         for (TableRow row : rows) {
-            stringBuilder.append(row.line(columnWidths));
+            stringBuilder.append(row.line(columnWidths, PADDING));
         }
 
         stringBuilder.append(dashedLineOfSize(tableCharacterWidth));
@@ -49,12 +48,11 @@ public class TableFormatter {
         return new String(new char[tableCharacterWidth]).replace("\0", DASH);
     }
 
-    private int tableCharacterWidth(String[] columnNames) {
-        int charactersInColumnNames = Stream.of(columnNames).map(String::length).reduce(0, (a, b) -> a + b);
-        return charactersInColumnNames + (columnNames.length * PADDING_LENGTH);
+    private int tableCharacterWidth(int[] columnWidths) {
+        return IntStream.of(columnWidths).reduce(0, (a, b) -> a + b);
     }
 
     private String restOfCellAsSpaces(int spaceLeftInColumn) {
-        return new String(new char[spaceLeftInColumn - 3]).replace("\0", " ") + " | ";
+        return new String(new char[spaceLeftInColumn - 3]).replace("\0", " ") + PADDING;
     }
 }
