@@ -1,26 +1,32 @@
 package io.github.tjheslin1.tl;
 
-import java.util.List;
-
 public class TableRow {
 
-    private final List<String> data;
+    private final String[] data;
 
-    public TableRow(List<String> data) {
+    public TableRow(String... data) {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return data.stream().reduce("", this::concat) + System.lineSeparator();
+    public int lengthOfFieldAtIndex(int index) {
+        return data[index].length();
     }
 
-    // TODO duplicate of TableFormatter
-    private String concat(String current, String toBeAppended) {
-        if(current.isEmpty()) {
-            return current + toBeAppended;
-        } else {
-            return current + "\t\t" + toBeAppended;
+    public String line(int[] columnIndexes) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < data.length; i++) {
+            int spaceLeftInColumn = columnIndexes[i] - data[i].length();
+            boolean lastColumn = i == data.length - 1;
+            if (lastColumn) {
+                stringBuilder.append(data[i]);
+            } else {
+                stringBuilder.append(data[i] + restOfCellAsSpaces(spaceLeftInColumn));
+            }
         }
+        return stringBuilder.toString() + System.lineSeparator();
+    }
+
+    private String restOfCellAsSpaces(int spaceLeftInColumn) {
+        return new String(new char[spaceLeftInColumn - 3]).replace("\0", " ") + " | ";
     }
 }

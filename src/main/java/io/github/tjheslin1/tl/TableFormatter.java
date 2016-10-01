@@ -1,44 +1,60 @@
 package io.github.tjheslin1.tl;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public class TableFormatter {
 
     private final static String DASH = "-";
-    private static final int TAB_SIZE = 4;
+    public static final String PADDING = " | ";
+    public static final int PADDING_LENGTH = PADDING.length();
 
-    public String format(List<String> columnNames, List<TableRow> rows) {
+    private final ColumnWitdthCalculator columnWitdthCalculator;
+
+    public TableFormatter(ColumnWitdthCalculator columnWitdthCalculator) {
+        this.columnWitdthCalculator = columnWitdthCalculator;
+    }
+
+    public String format(String[] columnNames, TableRow[] rows) {
+        int[] columnWidths = columnWitdthCalculator.indexes(columnNames, rows);
         int tableCharacterWidth = tableCharacterWidth(columnNames);
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(dashedLineOfSize(tableCharacterWidth) + System.lineSeparator());
+        printDashedLine(tableCharacterWidth, stringBuilder);
 
-        String columnLine = columnNames.stream().reduce("", this::concat);
-        stringBuilder.append(columnLine + System.lineSeparator());
+        for (int i = 0; i < columnNames.length; i++) {
+            int spaceLeftInColumn = columnWidths[i] - columnNames[i].length();
+            boolean lastColumn = i == columnNames.length - 1;
+            if (lastColumn) {
+                stringBuilder.append(columnNames[i]);
+            } else {
+                stringBuilder.append(columnNames[i] + restOfCellAsSpaces(spaceLeftInColumn));
+            }
+        }
+        stringBuilder.append(System.lineSeparator());
+        printDashedLine(tableCharacterWidth, stringBuilder);
 
-        stringBuilder.append(dashedLineOfSize(tableCharacterWidth) + System.lineSeparator());
-
-        rows.stream().forEach(stringBuilder::append);
+        for (TableRow row : rows) {
+            stringBuilder.append(row.line(columnWidths));
+        }
 
         stringBuilder.append(dashedLineOfSize(tableCharacterWidth));
         return stringBuilder.toString();
     }
 
-    // TODO duplicate of TableRow
-    private String concat(String current, String toBeAppended) {
-        if(current.isEmpty()) {
-            return current + toBeAppended;
-        } else {
-            return current + "\t\t" + toBeAppended;
-        }
+    private StringBuilder printDashedLine(int tableCharacterWidth, StringBuilder stringBuilder) {
+        return stringBuilder.append(dashedLineOfSize(tableCharacterWidth) + System.lineSeparator());
     }
 
     private String dashedLineOfSize(int tableCharacterWidth) {
         return new String(new char[tableCharacterWidth]).replace("\0", DASH);
     }
 
-    private int tableCharacterWidth(List<String> columnNames) {
-        int charactersInColumnNames = columnNames.stream().map(String::length).reduce(0, (a, b) -> a + b);
-        return charactersInColumnNames + columnNames.size() * TAB_SIZE;
+    private int tableCharacterWidth(String[] columnNames) {
+        int charactersInColumnNames = Stream.of(columnNames).map(String::length).reduce(0, (a, b) -> a + b);
+        return charactersInColumnNames + (columnNames.length * PADDING_LENGTH);
+    }
+
+    private String restOfCellAsSpaces(int spaceLeftInColumn) {
+        return new String(new char[spaceLeftInColumn - 3]).replace("\0", " ") + " | ";
     }
 }

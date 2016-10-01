@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 
 public class TableLogger {
 
@@ -30,10 +29,19 @@ public class TableLogger {
                     format("Attempting to log data with '%s' values into '%s' columns", values.length, columnNames.size()));
         }
 
-        rows.add(new TableRow(asList(values)));
+        rows.add(new TableRow(values));
     }
 
     public void print() {
-        System.out.println(tableFormatter.format(columnNames, rows));
+        String[] columnsArray = new String[columnNames.size()];
+        for (int i = 0; i < columnNames.size(); i++) {
+            columnsArray[i] = columnNames.get(i);
+        }
+
+        TableRow[] rowsArray = new TableRow[rows.size()];
+        for (int i = 0; i < rows.size(); i++) {
+            rowsArray[i] = rows.get(i);
+        }
+        System.out.println(tableFormatter.format(columnsArray, rowsArray));
     }
 }

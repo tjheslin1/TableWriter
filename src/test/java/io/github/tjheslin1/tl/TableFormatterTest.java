@@ -3,22 +3,31 @@ package io.github.tjheslin1.tl;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
+public class TableFormatterTest implements WithAssertions, WithMockito {
 
-public class TableFormatterTest implements WithAssertions {
-
-    private final TableFormatter tableFormatter = new TableFormatter();
+    private ColumnWitdthCalculator columnWitdthCalculator = mock(ColumnWitdthCalculator.class);
+    private final TableFormatter tableFormatter = new TableFormatter(columnWitdthCalculator);
 
     @Test
     public void calculatesCharacterWidth() throws Exception {
-        String format = tableFormatter.format(asList("testColumn1", "testColumn2"), singletonList(new TableRow(asList("field1", "field2"))));
+        String[] columnNames = {"testColumn1", "testColumn2"};
+        TableRow[] rows = {new TableRow("field1", "field2"),
+                new TableRow("field1", "field2"),
+                new TableRow("longlonglongfield1..", "field2"),
+                new TableRow("field1", "field2")};
+
+        when(columnWitdthCalculator.indexes(columnNames, rows)).thenReturn(new int[]{23, 14});
+
+        String format = tableFormatter.format(columnNames, rows);
 
         assertThat(format).isEqualTo(
-                "------------------------------\n" +
-                "testColumn1		testColumn2\n" +
-                "------------------------------\n" +
-                "field1		field2\n" +
-                "------------------------------");
+                "----------------------------\n" +
+                        "testColumn1          | testColumn2\n" +
+                        "----------------------------\n" +
+                        "field1               | field2\n" +
+                        "field1               | field2\n" +
+                        "longlonglongfield1.. | field2\n" +
+                        "field1               | field2\n" +
+                        "----------------------------");
     }
 }
