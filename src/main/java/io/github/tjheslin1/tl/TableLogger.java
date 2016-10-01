@@ -36,13 +36,10 @@ public class TableLogger {
     }
 
     public void print() {
-        String[] columnsArray = columnsArray();
-        TableRow[] rowsArray = rowsArray();
-
-        outputStrategy.print(tableFormatter.format(columnsArray, rowsArray));
+        outputStrategy.print(tableFormatter.format(columns(), rows()));
     }
 
-    private String[] columnsArray() {
+    private String[] columns() {
         String[] columnsArray = new String[columnNames.size()];
         for (int i = 0; i < columnNames.size(); i++) {
             columnsArray[i] = columnNames.get(i);
@@ -50,7 +47,7 @@ public class TableLogger {
         return columnsArray;
     }
 
-    private TableRow[] rowsArray() {
+    private TableRow[] rows() {
         TableRow[] rowsArray = new TableRow[rows.size()];
         for (int i = 0; i < rows.size(); i++) {
             rowsArray[i] = rows.get(i);
