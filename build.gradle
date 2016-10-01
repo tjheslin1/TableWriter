@@ -3,7 +3,17 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.8
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.10'
+    }
+}
 
 repositories {
     mavenCentral()
@@ -11,4 +21,18 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'org.assertj:assertj-core:3.5.2'
+}
+
+apply plugin: "info.solidsoft.pitest"
+
+build.dependsOn "pitest"
+
+pitest {
+    targetClasses = ['io.github.tjheslin1.*']
+    pitestVersion = "1.1.0"
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    reportDir = "build/pit-output"
+// TODO    mutationThreshold = 100
 }
