@@ -1,3 +1,5 @@
 *.jar
 .idea/
 *.iml
+.gradle/
+build/
