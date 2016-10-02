@@ -38,3 +38,8 @@ pitest {
     reportDir = "build/pit-output"
 // TODO    mutationThreshold = 100
 }
+
+task run(type: JavaExec) {
+    main = "io.github.tjheslin1.tl.Main"
+    classpath = sourceSets.main.runtimeClasspath
+}

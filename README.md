@@ -3,7 +3,7 @@
 Fluent api for outputting a table of stats
 
 ```
-    TableLogger tableLogger = new TableLogger(new TableFormatter(columnWitdthCalculator), table -> System.out.println(table))
+    TableLogger tableLogger = new TableLogger(new TableFormatter(columnWidthCalculator), table -> System.out.println(table))
             .withColumn("Name")
             .withColumn("Role")
             .withColumn("Working Days");

@@ -7,14 +7,14 @@ public class TableFormatter {
     private final static String DASH = "-";
     public static final String PADDING = " | ";
 
-    private final ColumnWitdthCalculator columnWitdthCalculator;
+    private final ColumnWidthCalculator columnWidthCalculator;
 
-    public TableFormatter(ColumnWitdthCalculator columnWitdthCalculator) {
-        this.columnWitdthCalculator = columnWitdthCalculator;
+    public TableFormatter(ColumnWidthCalculator columnWidthCalculator) {
+        this.columnWidthCalculator = columnWidthCalculator;
     }
 
     public String writeTable(String[] columnNames, TableRow[] rows) {
-        int[] columnWidths = columnWitdthCalculator.indexes(columnNames, rows);
+        int[] columnWidths = columnWidthCalculator.indexes(columnNames, rows);
         int tableCharacterWidth = tableCharacterWidth(columnWidths);
 
         StringBuilder stringBuilder = new StringBuilder();

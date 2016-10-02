@@ -5,8 +5,8 @@ import org.junit.Test;
 
 public class TableFormatterTest implements WithAssertions, WithMockito {
 
-    private ColumnWitdthCalculator columnWitdthCalculator = mock(ColumnWitdthCalculator.class);
-    private final TableFormatter tableFormatter = new TableFormatter(columnWitdthCalculator);
+    private ColumnWidthCalculator columnWidthCalculator = mock(ColumnWidthCalculator.class);
+    private final TableFormatter tableFormatter = new TableFormatter(columnWidthCalculator);
 
     @Test
     public void calculatesCharacterWidth() throws Exception {
@@ -16,7 +16,7 @@ public class TableFormatterTest implements WithAssertions, WithMockito {
                 new TableRow("longlonglongfield1..", "field2"),
                 new TableRow("field1", "field2")};
 
-        when(columnWitdthCalculator.indexes(columnNames, rows)).thenReturn(new int[]{23, 11});
+        when(columnWidthCalculator.indexes(columnNames, rows)).thenReturn(new int[]{23, 11});
 
         String format = tableFormatter.writeTable(columnNames, rows);
 

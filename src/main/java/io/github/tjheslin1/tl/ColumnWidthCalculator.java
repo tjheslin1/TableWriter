@@ -1,6 +1,6 @@
 package io.github.tjheslin1.tl;
 
-public class ColumnWitdthCalculator {
+public class ColumnWidthCalculator {
 
     public int[] indexes(String[] columnNames, TableRow[] rows) {
         int[] columnIndexes = new int[columnNames.length];
