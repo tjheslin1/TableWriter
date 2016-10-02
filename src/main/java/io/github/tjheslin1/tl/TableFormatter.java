@@ -13,7 +13,7 @@ public class TableFormatter {
         this.columnWitdthCalculator = columnWitdthCalculator;
     }
 
-    public String format(String[] columnNames, TableRow[] rows) {
+    public String writeTable(String[] columnNames, TableRow[] rows) {
         int[] columnWidths = columnWitdthCalculator.indexes(columnNames, rows);
         int tableCharacterWidth = tableCharacterWidth(columnWidths);
 

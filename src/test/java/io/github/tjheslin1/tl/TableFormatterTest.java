@@ -18,7 +18,7 @@ public class TableFormatterTest implements WithAssertions, WithMockito {
 
         when(columnWitdthCalculator.indexes(columnNames, rows)).thenReturn(new int[]{23, 11});
 
-        String format = tableFormatter.format(columnNames, rows);
+        String format = tableFormatter.writeTable(columnNames, rows);
 
         assertThat(format).isEqualTo(
                 "----------------------------------\n" +

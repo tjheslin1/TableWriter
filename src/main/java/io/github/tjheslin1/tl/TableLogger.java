@@ -36,7 +36,7 @@ public class TableLogger {
     }
 
     public void print() {
-        outputStrategy.print(tableFormatter.format(columns(), rows()));
+        outputStrategy.print(tableFormatter.writeTable(columns(), rows()));
     }
 
     private String[] columns() {
