@@ -1,27 +1,25 @@
 package io.github.tjheslin1.tl;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.IntStream.range;
+
 public class ColumnWidthCalculator {
 
-    public int[] indexes(String[] columnNames, TableRow[] rows) {
-        int[] columnIndexes = new int[columnNames.length];
-
-        for (int column = 0; column < columnNames.length; column++) {
-            boolean lastColumn = column == columnNames.length - 1;
-            int columnWidth = widthOfColumnInChars(column, lastColumn, columnNames, rows);
-            columnIndexes[column] = columnWidth;
-        }
-
-        return columnIndexes;
+    public int[] columnWidths(String[] columnNames, TableRow[] rows) {
+        return range(0, columnNames.length)
+                .map(index -> widthOfColumnInChars(index, columnNames, rows))
+                .toArray();
     }
 
-    private int widthOfColumnInChars(int columnIndex, boolean lastColumn, String[] columnNames, TableRow[] rows) {
-        int columnWidth = columnNames[columnIndex].length();
-        for (TableRow row : rows) {
-            int lengthOfField = row.lengthOfFieldAtIndex(columnIndex);
-            if (lengthOfField > columnWidth) {
-                columnWidth = lengthOfField;
-            }
-        }
-        return lastColumn ? columnWidth : columnWidth + TableFormatter.PADDING.length();
+    private int widthOfColumnInChars(int columnIndex, String[] columnNames, TableRow[] rows) {
+        int columnNameWidth = columnNames[columnIndex].length();
+        int columnDataWidth = columnDataWidth(columnIndex, rows);
+        return Math.max(columnNameWidth, columnDataWidth);
+    }
+
+    private int columnDataWidth(int columnIndex, TableRow[] rows) {
+        return stream(rows)
+                .mapToInt(value -> value.lengthOfFieldAtIndex(columnIndex))
+                .max().orElse(0);
     }
 }

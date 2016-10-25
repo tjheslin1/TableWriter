@@ -1,11 +1,21 @@
 package io.github.tjheslin1.tl;
 
-import java.util.stream.IntStream;
+import static java.lang.System.lineSeparator;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.IntStream.range;
 
 public class TableFormatter {
 
-    private final static String DASH = "-";
-    public static final String PADDING = " | ";
+    private static final char DASH = '-';
+
+    private static final String LEFT_HEADER_PADDING = "+-";
+    private static final String MIDDLE_HEADER_PADDING = "-+-";
+    private static final String RIGHT_HEADER_PADDING = "-+";
+
+    private static final String LEFT_PADDING = "| ";
+    private static final String MIDDLE_PADDING = " | ";
+    private static final String RIGHT_PADDING = " |";
 
     private final ColumnWidthCalculator columnWidthCalculator;
 
@@ -14,52 +24,44 @@ public class TableFormatter {
     }
 
     public String writeTable(String[] columnNames, TableRow[] rows) {
-        int[] columnWidths = columnWidthCalculator.indexes(columnNames, rows);
-        int tableCharacterWidth = tableCharacterWidth(columnWidths);
+        int[] columnWidths = columnWidthCalculator.columnWidths(columnNames, rows);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        printDashedLine(tableCharacterWidth, stringBuilder);
+        StringBuilder tableBuilder = new StringBuilder();
 
-        stringBuilder.append(columnLine(columnNames, columnWidths));
-        stringBuilder.append(System.lineSeparator());
-
-        printDashedLine(tableCharacterWidth, stringBuilder);
+        tableBuilder.append(dashedLine(columnWidths));
+        tableBuilder.append(columnHeaderLine(columnNames, columnWidths));
+        tableBuilder.append(dashedLine(columnWidths));
 
         for (TableRow row : rows) {
-            stringBuilder.append(row.line(columnWidths, PADDING));
+            tableBuilder.append(row.line(columnWidths, LEFT_PADDING, MIDDLE_PADDING, RIGHT_PADDING));
         }
+        tableBuilder.append(dashedLine(columnWidths));
 
-        stringBuilder.append(dashedLineOfSize(tableCharacterWidth));
-        return stringBuilder.toString();
+        return tableBuilder.toString();
     }
 
-    private String columnLine(String[] columnNames, int[] columnWidths) {
-        StringBuilder columnLineBuilder = new StringBuilder();
-        for (int i = 0; i < columnNames.length; i++) {
-            int spaceLeftInColumn = columnWidths[i] - columnNames[i].length();
-            boolean lastColumn = i == columnNames.length - 1;
-            if (lastColumn) {
-                columnLineBuilder.append(columnNames[i]);
-            } else {
-                columnLineBuilder.append(columnNames[i] + restOfCellAsSpaces(spaceLeftInColumn));
-            }
-        }
-        return columnLineBuilder.toString();
+    private String columnHeaderLine(String[] columnNames, int[] columnWidths) {
+        return range(0, columnNames.length)
+                .mapToObj(index -> columnHeader(index, columnNames, columnWidths))
+                .collect(joining(MIDDLE_PADDING, LEFT_PADDING, RIGHT_PADDING + lineSeparator()));
     }
 
-    private StringBuilder printDashedLine(int tableCharacterWidth, StringBuilder stringBuilder) {
-        return stringBuilder.append(dashedLineOfSize(tableCharacterWidth) + System.lineSeparator());
+    private String columnHeader(int index, String[] columnNames, int[] columnWidths) {
+        int spaceLeftInColumn = MIDDLE_PADDING.length() + columnWidths[index] - columnNames[index].length();
+        return columnNames[index] + restOfCellAsSpaces(spaceLeftInColumn);
     }
 
-    private String dashedLineOfSize(int tableCharacterWidth) {
-        return new String(new char[tableCharacterWidth]).replace("\0", DASH);
+    private String dashedLine(int[] columnWidths) {
+        return stream(columnWidths)
+                .mapToObj(this::dashedLineOfSize)
+                .collect(joining(MIDDLE_HEADER_PADDING, LEFT_HEADER_PADDING, RIGHT_HEADER_PADDING + lineSeparator()));
     }
 
-    private int tableCharacterWidth(int[] columnWidths) {
-        return IntStream.of(columnWidths).reduce(0, (a, b) -> a + b);
+    private String dashedLineOfSize(int width) {
+        return new String(new char[width]).replace('\0', DASH);
     }
 
     private String restOfCellAsSpaces(int spaceLeftInColumn) {
-        return new String(new char[spaceLeftInColumn - 3]).replace("\0", " ") + PADDING;
+        return new String(new char[spaceLeftInColumn - 3]).replace('\0', ' ');
     }
 }

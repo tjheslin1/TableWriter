@@ -1,5 +1,9 @@
 package io.github.tjheslin1.tl;
 
+import static java.lang.System.lineSeparator;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.IntStream.range;
+
 public class TableRow {
 
     private final String[] data;
@@ -12,21 +16,18 @@ public class TableRow {
         return data[index].length();
     }
 
-    public String line(int[] columnIndexes, String padding) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < data.length; i++) {
-            int spaceLeftInColumn = columnIndexes[i] - data[i].length();
-            boolean lastColumn = i == data.length - 1;
-            if (lastColumn) {
-                stringBuilder.append(data[i]);
-            } else {
-                stringBuilder.append(data[i] + restOfCellAsSpaces(spaceLeftInColumn, padding));
-            }
-        }
-        return stringBuilder.toString() + System.lineSeparator();
+    public String line(int[] columnWidths, String leftPadding, String middlePadding, String rightPadding) {
+        return range(0, columnWidths.length)
+                .mapToObj(index -> paddedData(index, columnWidths))
+                .collect(joining(middlePadding, leftPadding, rightPadding + lineSeparator()));
     }
 
-    private String restOfCellAsSpaces(int spaceLeftInColumn, String padding) {
-        return new String(new char[spaceLeftInColumn - 3]).replace("\0", " ") + padding;
+    private String paddedData(int index, int[] columnWidths) {
+        int spaceLeftInColumn = columnWidths[index] - data[index].length();
+        return data[index] + restOfCellAsSpaces(spaceLeftInColumn);
+    }
+
+    private String restOfCellAsSpaces(int spaceLeftInColumn) {
+        return new String(new char[spaceLeftInColumn]).replace('\0', ' ');
     }
 }
