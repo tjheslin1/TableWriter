@@ -35,8 +35,12 @@ public class TableLogger {
         rows.add(new TableRow(values));
     }
 
+    public String tableAsString() {
+        return tableFormatter.writeTable(columns(), rows());
+    }
+
     public void print() {
-        outputStrategy.print(tableFormatter.writeTable(columns(), rows()));
+        outputStrategy.print(tableAsString());
     }
 
     private String[] columns() {
