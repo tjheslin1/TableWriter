@@ -1,7 +1,10 @@
 group 'io.github.tjheslin1'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 apply plugin: 'java'
+
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 
@@ -17,7 +20,6 @@ buildscript {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
@@ -26,20 +28,40 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.+"
 }
 
-apply plugin: "info.solidsoft.pitest"
-
-build.dependsOn "pitest"
-
-pitest {
-    targetClasses = ['io.github.tjheslin1.*']
-    pitestVersion = "1.1.0"
-    threads = 4
-    outputFormats = ['XML', 'HTML']
-    reportDir = "build/pit-output"
-// TODO    mutationThreshold = 100
-}
-
 task run(type: JavaExec) {
     main = "io.github.tjheslin1.tl.Main"
     classpath = sourceSets.main.runtimeClasspath
 }
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+//task writeNewPom << {
+//    pom {
+//        project {
+//            inceptionYear '2016'
+//            licenses {
+//                license {
+//                    name 'The Apache Software License, Version 2.0'
+//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    distribution 'repo'
+//                }
+//            }
+//        }
+//    }.writeTo("$buildDir/pom.xml")
+//}
