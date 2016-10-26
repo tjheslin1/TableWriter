@@ -4,7 +4,7 @@ version '1.0'
 apply plugin: 'java'
 
 apply plugin: 'maven'
-apply plugin: 'signing'
+//apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 
@@ -28,40 +28,44 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.+"
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+}
+
 task run(type: JavaExec) {
     main = "io.github.tjheslin1.tl.Main"
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
-}
-
-//task writeNewPom << {
-//    pom {
-//        project {
-//            inceptionYear '2016'
-//            licenses {
-//                license {
-//                    name 'The Apache Software License, Version 2.0'
-//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    distribution 'repo'
-//                }
-//            }
-//        }
-//    }.writeTo("$buildDir/pom.xml")
+//task javadocJar(type: Jar) {
+//    classifier = 'javadoc'
+//    from javadoc
 //}
+//
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from sourceSets.main.allSource
+//}
+
+//artifacts {
+//    archives javadocJar, sourcesJar
+//}
+
+//signing {
+//    sign configurations.archives
+//}
+
+task writePom << {
+    pom {
+        project {
+            inceptionYear '2016'
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("$buildDir/pom.xml")
+}
