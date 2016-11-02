@@ -1,4 +1,4 @@
-package io.github.tjheslin1.tl;
+package io.github.tjheslin1.tablewriter;
 
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;

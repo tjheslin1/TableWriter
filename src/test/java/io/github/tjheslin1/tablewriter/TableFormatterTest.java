@@ -1,4 +1,4 @@
-package io.github.tjheslin1.tl;
+package io.github.tjheslin1.tablewriter;
 
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class TableFormatterTest implements WithAssertions, WithMockito {
         String[] columnNames = {"testColumn1", "testColumn2"};
         TableRow[] rows = {};
 
-        String format = tableFormatter.writeTable(columnNames, rows);
+        String format = tableFormatter.formatTable(columnNames, rows);
 
         assertThat(format).isEqualTo(
                 "+-------------+-------------+" + System.lineSeparator() +
@@ -29,7 +29,7 @@ public class TableFormatterTest implements WithAssertions, WithMockito {
                 new TableRow("longlonglongfield1..", "field2"),
                 new TableRow("field1", "field2")};
 
-        String format = tableFormatter.writeTable(columnNames, rows);
+        String format = tableFormatter.formatTable(columnNames, rows);
 
         assertThat(format).isEqualTo(
                 "+----------------------+-------------+" + System.lineSeparator() +

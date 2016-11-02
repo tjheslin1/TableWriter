@@ -3,16 +3,16 @@
 Fluent api for outputting a table of stats
 
 ```
-TableLogger tableLogger = new TableLogger(new TableFormatter(new ColumnWidthCalculator()), table -> System.out.println(table))
+TableWriter tableWriter = new TableWriter(new TableFormatter(columnWidthCalculator), table -> System.out.println(table))
         .withColumn("Name")
         .withColumn("Role")
         .withColumn("Working Days");
 
-tableLogger.addRow("Tom", "Developer", "5");
-tableLogger.addRow("Paul", "Tester", "4");
-tableLogger.addRow("Karen", "Support", "6");
+tableWriter.addRow("Tom", "Developer", "5");
+tableWriter.addRow("Paul", "Tester", "4");
+tableWriter.addRow("Karen", "Support", "6");
 
-tableLogger.print();
+tableWriter.print();
 ```
 
 Output:
@@ -27,5 +27,5 @@ Output:
 +-------+-----------+--------------+
 ```
 
-The implementation of the interface `OutputStrategy` allows you to choose how this table gets outputted.
+The implementation of the interface [OutputStrategy](src/main/java/io/github/tjheslin1/tl/OutputStrategy.java) allows you to choose how this table gets outputted.
 The example here simply prints it to std out.

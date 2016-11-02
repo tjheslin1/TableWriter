@@ -33,7 +33,7 @@ task wrapper(type: Wrapper) {
 }
 
 task run(type: JavaExec) {
-    main = "io.github.tjheslin1.tl.Main"
+    main = "io.github.tjheslin1.tablewriter.Main"
     classpath = sourceSets.main.runtimeClasspath
 }
 

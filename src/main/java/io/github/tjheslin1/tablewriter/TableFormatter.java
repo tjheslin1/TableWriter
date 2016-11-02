@@ -1,10 +1,30 @@
-package io.github.tjheslin1.tl;
+/*
+ * Copyright 2016 Thomas Heslin <tjheslin1@gmail.com>.
+ *
+ * This file is part of TableWriter.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.github.tjheslin1.tablewriter;
 
 import static java.lang.System.lineSeparator;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 
+/**
+ * Converts a list of {@link TableRow} into a formatted table.
+ */
 public class TableFormatter {
 
     private static final char DASH = '-';
@@ -23,7 +43,13 @@ public class TableFormatter {
         this.columnWidthCalculator = columnWidthCalculator;
     }
 
-    public String writeTable(String[] columnNames, TableRow[] rows) {
+    /**
+     *
+     * @param columnNames The names of the columns headers.
+     * @param rows The content of each row, the length of each row is to match the number of columns.
+     * @return The formatted table as a string.
+     */
+    public String formatTable(String[] columnNames, TableRow[] rows) {
         int[] columnWidths = columnWidthCalculator.columnWidths(columnNames, rows);
 
         StringBuilder tableBuilder = new StringBuilder();

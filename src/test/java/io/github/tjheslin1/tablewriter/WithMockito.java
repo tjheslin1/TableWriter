@@ -1,4 +1,4 @@
-package io.github.tjheslin1.tl;
+package io.github.tjheslin1.tablewriter;
 
 import org.mockito.Mockito;
 import org.mockito.stubbing.OngoingStubbing;
