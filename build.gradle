@@ -1,5 +1,5 @@
 group 'io.github.tjheslin1'
-version '1.1'
+version '1.0'
 
 apply plugin: 'java'
 
@@ -97,5 +97,3 @@ uploadArchives {
         }
     }
 }
-
-// http://yennicktrevels.com/blog/2013/10/11/automated-gradle-project-deployment-to-sonatype-oss-repository/
