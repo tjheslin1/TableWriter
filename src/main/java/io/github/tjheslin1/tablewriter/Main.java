@@ -26,8 +26,6 @@ public class Main {
 
     /**
      * Example usage.
-     *
-     * @param args
      */
     public static void main(String[] args) {
         TableWriter tableWriter = new TableWriter(new TableFormatter(columnWidthCalculator), table -> System.out.println(table))
