@@ -18,7 +18,7 @@
 package io.github.tjheslin1.tablewriter;
 
 /**
- *
+ * Used to generate example.
  */
 public class Main {
 
