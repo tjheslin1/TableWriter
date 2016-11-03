@@ -29,3 +29,13 @@ Output:
 
 The implementation of the interface [OutputStrategy](src/main/java/io/github/tjheslin1/tablewriter/OutputStrategy.java) allows you to choose how this table gets outputted.
 The example here simply prints it to std out.
+
+##How do I get it?
+
+```xml
+<dependency>
+    <groupId>io.github.tjheslin1</groupId>
+    <artifactId>TableWriter</artifactId>
+    <version>1.1</version>
+</dependency>
+```
