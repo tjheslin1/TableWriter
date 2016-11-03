@@ -2,7 +2,7 @@
 
 Fluent api for outputting a table of stats
 
-```
+```java
 TableWriter tableWriter = new TableWriter(new TableFormatter(columnWidthCalculator), table -> System.out.println(table))
         .withColumn("Name")
         .withColumn("Role")
