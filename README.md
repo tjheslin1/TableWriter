@@ -32,10 +32,19 @@ The example here simply prints it to std out.
 
 ##How do I get it?
 
+###Maven
 ```xml
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>TableWriter</artifactId>
     <version>1.1</version>
 </dependency>
+```
+###Gradle
+```groovy
+compile 'io.github.tjheslin1:TableWriter:1.1'
+```
+###SBT
+```scala
+libraryDependencies += "io.github.tjheslin1" % "TableWriter" % "1.1"
 ```
