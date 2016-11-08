@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class TableFormatterTest implements WithAssertions, WithMockito {
 
-    private final TableFormatter tableFormatter = new TableFormatter(new ColumnWidthCalculator());
+    private final TableFormatter tableFormatter = new TableFormatter();
 
     @Test
     public void noRows() throws Exception {

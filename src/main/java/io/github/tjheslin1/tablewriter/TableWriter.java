@@ -20,14 +20,12 @@ package io.github.tjheslin1.tablewriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.String.format;
-
 /**
  * Fluent API for constructing a table of stats.
  */
 public class TableWriter {
 
-    private final List<String> columnNames;
+    public final List<String> columnNames;
     private final List<TableRow> rows;
 
     private final TableFormatter tableFormatter;
@@ -54,19 +52,14 @@ public class TableWriter {
     }
 
     /**
-     * Appends a row to the table.
-     * The rows appear in the order this method is called.
-     * Throws an IllegalStateException if the number of values doesn't match the number of columns.
+     * Switches the current context to a {@link RowAppender}.
+     * At which point rows can be added to the table.
      *
-     * @param values The values of the row. The number of values must match the number of columns.
+     * @return A {@link RowAppender} from which point on the
+     * fluent api starts asking for rows.
      */
-    public void addRow(String... values) {
-        if (values.length != columnNames.size()) {
-            throw new IllegalStateException(
-                    format("Attempting to log data with '%s' values into '%s' columns", values.length, columnNames.size()));
-        }
-
-        rows.add(new TableRow(values));
+    public RowAppender withRows() {
+        return new RowAppender(this);
     }
 
     /**
@@ -76,13 +69,6 @@ public class TableWriter {
      */
     public String tableAsString() {
         return tableFormatter.formatTable(columns(), rows());
-    }
-
-    /**
-     * Prints the formatted table by invoking the provided {@link OutputStrategy}.
-     */
-    public void print() {
-        outputStrategy.print(tableAsString());
     }
 
     private String[] columns() {
@@ -99,5 +85,17 @@ public class TableWriter {
             rowsArray[i] = rows.get(i);
         }
         return rowsArray;
+    }
+
+    int columnCount() {
+        return columnNames.size();
+    }
+
+    void addRow(TableRow tableRow) {
+        rows.add(tableRow);
+    }
+
+    void print() {
+        outputStrategy.print(tableAsString());
     }
 }

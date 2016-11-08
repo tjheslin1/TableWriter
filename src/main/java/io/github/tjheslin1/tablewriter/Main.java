@@ -22,23 +22,18 @@ package io.github.tjheslin1.tablewriter;
  */
 public class Main {
 
-    private static ColumnWidthCalculator columnWidthCalculator = new ColumnWidthCalculator();
-
     /**
      * Example usage.
      *
      * @param args unused.
      */
     public static void main(String[] args) {
-        TableWriter tableWriter = new TableWriter(new TableFormatter(columnWidthCalculator), table -> System.out.println(table))
-                .withColumn("Name")
-                .withColumn("Role")
-                .withColumn("Working Days");
-
-        tableWriter.addRow("Tom", "Developer", "5");
-        tableWriter.addRow("Paul", "Tester", "4");
-        tableWriter.addRow("Karen", "Support", "6");
-
-        tableWriter.print();
+        new TableWriter(new TableFormatter(), table -> System.out.println(table))
+                .withColumn("Name").withColumn("Role").withColumn("Working Days")
+                .withRows()
+                .row("Tom", "Developer", "5")
+                .row("Paul", "Tester", "4")
+                .row("Karen", "Support", "6")
+                .printTable();
     }
 }

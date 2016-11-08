@@ -39,8 +39,8 @@ public class TableFormatter {
 
     private final ColumnWidthCalculator columnWidthCalculator;
 
-    public TableFormatter(ColumnWidthCalculator columnWidthCalculator) {
-        this.columnWidthCalculator = columnWidthCalculator;
+    public TableFormatter() {
+        this.columnWidthCalculator = new ColumnWidthCalculator();
     }
 
     /**
