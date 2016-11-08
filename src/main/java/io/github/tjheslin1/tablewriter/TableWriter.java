@@ -56,6 +56,9 @@ public class TableWriter {
      * Switches the current context to a {@link RowAppender}.
      * At which point rows can be added to the table.
      *
+     * @param enforceRowLengths Decides whether to throw an
+     *  exception if the correct number of cells aren't provided.
+     *
      * @return A {@link RowAppender} from which point on the
      * fluent api starts asking for rows.
      */

@@ -43,6 +43,8 @@ public class RowAppender {
      * Throws an IllegalStateException if the number of values doesn't match the number of columns when this check is enabled.
      *
      * @param values The values of the row.
+     *
+     * @return 'this' instance of {@link RowAppender} having rows appended to it.
      */
     public RowAppender row(String... values) {
         if (values.length > tableWriter.columnCount()

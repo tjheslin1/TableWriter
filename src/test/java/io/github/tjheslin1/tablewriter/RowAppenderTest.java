@@ -23,6 +23,21 @@ public class RowAppenderTest implements WithAssertions, WithMockito {
     }
 
     @Test
+    public void throwsExceptionITooManyRowValuesAreProvidedEventWhenThisCheckIsDisabled() throws Exception {
+        when(tableWriter.columnCount()).thenReturn(2);
+
+        RowAppender rowAppender = new RowAppender(tableWriter, false);
+
+        rowAppender.row("valA", "valB");
+        try {
+            rowAppender.row("val1", "val2", "val3");
+            fail("IllegalStateException should have been thrown as we are enforcing the correct number of values.");
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage()).isEqualTo("Attempting to log data with '3' values into '2' columns");
+        }
+    }
+
+    @Test
     public void padsUnprovidedCellsWithEmptyStringsIfNotEnforcingRowLength() throws Exception {
         RowAppender rowAppender = new TableWriter(table -> {
             String expected = "+---------+---------+---------+\n" +
