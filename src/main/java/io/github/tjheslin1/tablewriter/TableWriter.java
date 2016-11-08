@@ -19,6 +19,7 @@ package io.github.tjheslin1.tablewriter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Fluent API for constructing a table of stats.
@@ -31,10 +32,10 @@ public class TableWriter {
     private final TableFormatter tableFormatter;
     private final OutputStrategy outputStrategy;
 
-    public TableWriter(TableFormatter tableFormatter, OutputStrategy outputStrategy) {
-        this.tableFormatter = tableFormatter;
+    public TableWriter(OutputStrategy outputStrategy) {
         this.outputStrategy = outputStrategy;
 
+        this.tableFormatter = new TableFormatter();
         this.columnNames = new ArrayList<>();
         this.rows = new ArrayList<>();
     }
@@ -58,8 +59,8 @@ public class TableWriter {
      * @return A {@link RowAppender} from which point on the
      * fluent api starts asking for rows.
      */
-    public RowAppender withRows() {
-        return new RowAppender(this);
+    public RowAppender withRows(boolean enforceRowLengths) {
+        return new RowAppender(this, enforceRowLengths);
     }
 
     /**
@@ -87,15 +88,15 @@ public class TableWriter {
         return rowsArray;
     }
 
+    void print() {
+        outputStrategy.print(tableAsString());
+    }
+
     int columnCount() {
         return columnNames.size();
     }
 
     void addRow(TableRow tableRow) {
         rows.add(tableRow);
-    }
-
-    void print() {
-        outputStrategy.print(tableAsString());
     }
 }

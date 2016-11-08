@@ -26,7 +26,7 @@ import static java.util.stream.IntStream.range;
  */
 public class TableRow {
 
-    private final String[] data;
+    public final String[] data;
 
     public TableRow(String... data) {
         this.data = data;
@@ -54,6 +54,13 @@ public class TableRow {
      */
     public int lengthOfFieldAtIndex(int index) {
         return data[index].length();
+    }
+
+    /**
+     * @return The number of values provided.
+     */
+    public int cellCount() {
+        return data.length;
     }
 
     private String paddedData(int index, int[] columnWidths) {

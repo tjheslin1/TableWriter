@@ -17,6 +17,9 @@
  */
 package io.github.tjheslin1.tablewriter;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import static java.lang.String.format;
 
 /**
@@ -25,25 +28,30 @@ import static java.lang.String.format;
 public class RowAppender {
 
     private final TableWriter tableWriter;
+    private final boolean enforceRowLengths;
 
-    public RowAppender(TableWriter tableWriter) {
+    public RowAppender(TableWriter tableWriter, boolean enforceRowLengths) {
         this.tableWriter = tableWriter;
+        this.enforceRowLengths = enforceRowLengths;
     }
 
     /**
      * Appends a row to the table.
      * The rows appear in the order this method is called.
-     * Throws an IllegalStateException if the number of values doesn't match the number of columns.
+     * 'enforceRowsLength' checks that the number of cells in a row provided match the number of columns.
+     * <p>
+     * Throws an IllegalStateException if the number of values doesn't match the number of columns when this check is enabled.
      *
-     * @param values The values of the row. The number of values must match the number of columns.
+     * @param values The values of the row.
      */
     public RowAppender row(String... values) {
-        if (values.length != tableWriter.columnCount()) {
+        if (values.length > tableWriter.columnCount()
+                || (enforceRowLengths && values.length < tableWriter.columnCount())) {
             throw new IllegalStateException(
                     format("Attempting to log data with '%s' values into '%s' columns", values.length, tableWriter.columnCount()));
         }
 
-        tableWriter.addRow(new TableRow(values));
+        tableWriter.addRow(padCells(new TableRow(values)));
         return this;
     }
 
@@ -52,5 +60,17 @@ public class RowAppender {
      */
     public void printTable() {
         tableWriter.print();
+    }
+
+    private TableRow padCells(TableRow tableRow) {
+        if (tableRow.cellCount() < tableWriter.columnCount()) {
+            String[] cellPadding = new String[tableWriter.columnCount() - tableRow.cellCount()];
+            Arrays.fill(cellPadding, "");
+            String[] cells = Stream.of(tableRow.data, cellPadding)
+                    .flatMap(Stream::of)
+                    .toArray(String[]::new);
+            tableRow = new TableRow(cells);
+        }
+        return tableRow;
     }
 }

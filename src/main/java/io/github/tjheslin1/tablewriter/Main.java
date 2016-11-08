@@ -22,18 +22,20 @@ package io.github.tjheslin1.tablewriter;
  */
 public class Main {
 
+    private static final boolean DONT_ENFORCE_ROW_LENGTHS = false;
+
     /**
      * Example usage.
      *
      * @param args unused.
      */
     public static void main(String[] args) {
-        new TableWriter(new TableFormatter(), table -> System.out.println(table))
+        new TableWriter(table -> System.out.println(table))
                 .withColumn("Name").withColumn("Role").withColumn("Working Days")
-                .withRows()
+                .withRows(DONT_ENFORCE_ROW_LENGTHS)
                 .row("Tom", "Developer", "5")
                 .row("Paul", "Tester", "4")
-                .row("Karen", "Support", "6")
+                .row("Karen", "Support")
                 .printTable();
     }
 }

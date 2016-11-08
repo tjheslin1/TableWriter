@@ -3,12 +3,12 @@
 Fluent api for outputting a table of stats
 
 ```java
-new TableWriter(new TableFormatter(), table -> System.out.println(table))
+new TableWriter(table -> System.out.println(table))
             .withColumn("Name").withColumn("Role").withColumn("Working Days")
-        .withRows()
+        .withRows(DONT_ENFORCE_ROW_LENGTHS)
             .row("Tom", "Developer", "5")
             .row("Paul", "Tester", "4")
-            .row("Karen", "Support", "6")
+            .row("Karen", "Support")
         .printTable();
 ```
 
@@ -20,7 +20,7 @@ Output:
 +-------+-----------+--------------+
 | Tom   | Developer | 5            |
 | Paul  | Tester    | 4            |
-| Karen | Support   | 6            |
+| Karen | Support   |              |
 +-------+-----------+--------------+
 ```
 
