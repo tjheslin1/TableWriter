@@ -34,14 +34,14 @@ The example here simply prints it to std out.
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>TableWriter</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 ###Gradle
 ```groovy
-compile 'io.github.tjheslin1:TableWriter:1.1'
+compile 'io.github.tjheslin1:TableWriter:1.2'
 ```
 ###SBT
 ```scala
-libraryDependencies += "io.github.tjheslin1" % "TableWriter" % "1.1"
+libraryDependencies += "io.github.tjheslin1" % "TableWriter" % "1.2"
 ```
