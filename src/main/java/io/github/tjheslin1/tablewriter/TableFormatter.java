@@ -17,6 +17,9 @@
  */
 package io.github.tjheslin1.tablewriter;
 
+import static io.github.tjheslin1.tablewriter.FormattingUtils.paddingOfCharacterOfLength;
+import static io.github.tjheslin1.tablewriter.FormattingUtils.spaceBeforeAndAfter;
+import static java.lang.String.format;
 import static java.lang.System.lineSeparator;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
@@ -27,15 +30,13 @@ import static java.util.stream.IntStream.range;
  */
 public class TableFormatter {
 
-    private static final char DASH = '-';
+    private static final String LEFT_BORDER_STYLING = "+-";
+    private static final String MIDDLE_BORDER_STYLING = "-+-";
+    private static final String RIGHT_BORDER_STYLING = "-+";
 
-    private static final String LEFT_HEADER_PADDING = "+-";
-    private static final String MIDDLE_HEADER_PADDING = "-+-";
-    private static final String RIGHT_HEADER_PADDING = "-+";
-
-    private static final String LEFT_PADDING = "| ";
-    private static final String MIDDLE_PADDING = " | ";
-    private static final String RIGHT_PADDING = " |";
+    private static final char HORIZONTAL_STYLING = '-';
+    private static final String VERTICAL_STYLING = "|";
+    private static final String CENTRE_STYLING = "|";
 
     private final ColumnWidthCalculator columnWidthCalculator;
 
@@ -44,9 +45,8 @@ public class TableFormatter {
     }
 
     /**
-     *
      * @param columnNames The names of the columns headers.
-     * @param rows The content of each row, the length of each row is to match the number of columns.
+     * @param rows        The content of each row, the length of each row is to match the number of columns.
      * @return The formatted table as a string.
      */
     public String formatTable(String[] columnNames, TableRow[] rows) {
@@ -59,7 +59,7 @@ public class TableFormatter {
         tableBuilder.append(dashedLine(columnWidths));
 
         for (TableRow row : rows) {
-            tableBuilder.append(row.line(columnWidths, LEFT_PADDING, MIDDLE_PADDING, RIGHT_PADDING));
+            tableBuilder.append(row.line(columnWidths, VERTICAL_STYLING, CENTRE_STYLING, VERTICAL_STYLING));
         }
         tableBuilder.append(dashedLine(columnWidths));
 
@@ -69,25 +69,17 @@ public class TableFormatter {
     private String columnHeaderLine(String[] columnNames, int[] columnWidths) {
         return range(0, columnNames.length)
                 .mapToObj(index -> columnHeader(index, columnNames, columnWidths))
-                .collect(joining(MIDDLE_PADDING, LEFT_PADDING, RIGHT_PADDING + lineSeparator()));
+                .collect(joining(CENTRE_STYLING, VERTICAL_STYLING, VERTICAL_STYLING + lineSeparator()));
     }
 
     private String columnHeader(int index, String[] columnNames, int[] columnWidths) {
-        int spaceLeftInColumn = MIDDLE_PADDING.length() + columnWidths[index] - columnNames[index].length();
-        return columnNames[index] + restOfCellAsSpaces(spaceLeftInColumn);
+        int spaceLeftInColumn = columnWidths[index] - columnNames[index].length();
+        return spaceBeforeAndAfter(columnNames[index] + paddingOfCharacterOfLength(' ', spaceLeftInColumn));
     }
 
     private String dashedLine(int[] columnWidths) {
         return stream(columnWidths)
-                .mapToObj(this::dashedLineOfSize)
-                .collect(joining(MIDDLE_HEADER_PADDING, LEFT_HEADER_PADDING, RIGHT_HEADER_PADDING + lineSeparator()));
-    }
-
-    private String dashedLineOfSize(int width) {
-        return new String(new char[width]).replace('\0', DASH);
-    }
-
-    private String restOfCellAsSpaces(int spaceLeftInColumn) {
-        return new String(new char[spaceLeftInColumn - 3]).replace('\0', ' ');
+                .mapToObj(columnWidth -> paddingOfCharacterOfLength(HORIZONTAL_STYLING, columnWidth))
+                .collect(joining(MIDDLE_BORDER_STYLING, LEFT_BORDER_STYLING, RIGHT_BORDER_STYLING + lineSeparator()));
     }
 }

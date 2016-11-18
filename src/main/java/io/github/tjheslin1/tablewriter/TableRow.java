@@ -17,6 +17,8 @@
  */
 package io.github.tjheslin1.tablewriter;
 
+import static io.github.tjheslin1.tablewriter.FormattingUtils.paddingOfCharacterOfLength;
+import static io.github.tjheslin1.tablewriter.FormattingUtils.spaceBeforeAndAfter;
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
@@ -35,10 +37,10 @@ public class TableRow {
     /**
      * String representation of the row of data.
      *
-     * @param columnWidths The calculated widths of the columns of the table.
-     * @param leftPadding The left padding of the table.
+     * @param columnWidths  The calculated widths of the columns of the table.
+     * @param leftPadding   The left padding of the table.
      * @param middlePadding The padding in between each cell in a row.
-     * @param rightPadding The right padding of the table.
+     * @param rightPadding  The right padding of the table.
      * @return The row of data as a line complete with whitespace padding and separators.
      */
     public String line(int[] columnWidths, String leftPadding, String middlePadding, String rightPadding) {
@@ -48,7 +50,6 @@ public class TableRow {
     }
 
     /**
-     *
      * @param index the 0 based index of the column of the data in the row.
      * @return The length of the table cell, in characters.
      */
@@ -65,10 +66,6 @@ public class TableRow {
 
     private String paddedData(int index, int[] columnWidths) {
         int spaceLeftInColumn = columnWidths[index] - data[index].length();
-        return data[index] + restOfCellAsSpaces(spaceLeftInColumn);
-    }
-
-    private String restOfCellAsSpaces(int spaceLeftInColumn) {
-        return new String(new char[spaceLeftInColumn]).replace('\0', ' ');
+        return spaceBeforeAndAfter(data[index] + paddingOfCharacterOfLength(' ', spaceLeftInColumn));
     }
 }
