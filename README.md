@@ -27,9 +27,9 @@ Output:
 The implementation of the interface [OutputStrategy](src/main/java/io/github/tjheslin1/tablewriter/OutputStrategy.java) allows you to choose how this table gets outputted.
 The example here simply prints it to std out.
 
-##How do I get it?
+## How do I get it?
 
-###Maven
+### Maven
 ```xml
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
@@ -37,11 +37,11 @@ The example here simply prints it to std out.
     <version>1.3</version>
 </dependency>
 ```
-###Gradle
+### Gradle
 ```groovy
 compile 'io.github.tjheslin1:TableWriter:1.3'
 ```
-###SBT
+### SBT
 ```scala
 libraryDependencies += "io.github.tjheslin1" % "TableWriter" % "1.3"
 ```
